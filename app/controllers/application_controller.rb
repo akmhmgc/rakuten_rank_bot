@@ -13,9 +13,8 @@ class ApplicationController < ActionController::Base
 
   def client
     @client ||= Line::Bot::Client.new do |config|
-      # ローカルで動かすだけならベタ打ちでもOK
-      config.channel_secret = "90d4fabc641260d27ae30013bc1805b5"
-      config.channel_token = "9Dxgw7jMRP04dSEpiaL9JZt3Cpsu51s/Tj+RfmAjxvemDl59mWkBeOHOvRfa130qF7TgQhJvsgoPN2GZ013akExxA0zQhuP+4ROB5Dpoi82amazb5eWO9fF0ZzpJJCNDKZZC6WWHWD/pYh0mk4nugQdB04t89/1O/w1cDnyilFU="
+      config.channel_secret = Rails.application.credentials.line_channel[:secret]
+      config.channel_token = Rails.application.credentials.line_channel[:token]
     end
   end
 end

@@ -1,24 +1,12 @@
-# README
+# 楽天市場ランキング通知ボット
+## 概要
+自社製品の楽天市場での順位変動を確認するために作成しました。
+検索ワード、商品URLをbotに送ることにより、ランキングを取得可能です。また、毎日のランキングをDBに保存することで変動を確認することが可能です。
+## URL
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+## 使用技術
+- Ruby 2.6.6
+- Ruby on Rails 6.0.4
+- PostgreSQL
+- Heroku
+- rakutenAPI

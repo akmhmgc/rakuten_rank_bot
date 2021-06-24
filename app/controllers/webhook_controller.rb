@@ -19,7 +19,8 @@ class WebhookController < ApplicationController
                            "登録\nキーワード\n商品URL\nを登録してください"
                          end
           when "ランキング"
-            reply_text = "ランキング"
+            user = User.find_by(uid: user_id)
+            reply_text = "#{user.search_info.ranking}位です。"
           when %r{登録\n(\S+)\n(https://item.rakuten.co.jp/.+[^/])}
             keyword = Regexp.last_match(1)
             url = Regexp.last_match(2)

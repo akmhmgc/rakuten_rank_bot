@@ -9,9 +9,15 @@ namespace :push_line do
       search_info = user.search_info
       next unless search_info
 
+      rank_order = search_info.check_ranking
+
+      #  ランキングを保存（一日あたり一回分しか保存されない）
+      search_info.ranks.find_or_create_by!(updated_at: Time.zone.today.all_day) do |rank|
+        rank.rank = rank_order
+      end
       message = {
         type: 'text',
-        text: "キーワード:#{search_info.keyword}\n商品URL:#{search_info.url}\n本日の順位:#{search_info.ranking}"
+        text: "キーワード:#{search_info.keyword}\n商品URL:#{search_info.url}\n本日の順位:#{rank_order}"
       }
       client.push_message(user.uid, message)
     end

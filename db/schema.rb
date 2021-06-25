@@ -10,10 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_23_082046) do
+ActiveRecord::Schema.define(version: 2021_06_25_005758) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "ranks", force: :cascade do |t|
+    t.bigint "search_info_id", null: false
+    t.integer "rank"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["search_info_id"], name: "index_ranks_on_search_info_id"
+  end
 
   create_table "search_infos", force: :cascade do |t|
     t.string "keyword"
@@ -30,5 +38,6 @@ ActiveRecord::Schema.define(version: 2021_06_23_082046) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "ranks", "search_infos"
   add_foreign_key "search_infos", "users"
 end

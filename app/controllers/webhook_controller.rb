@@ -14,13 +14,20 @@ class WebhookController < ApplicationController
           when "登録情報"
             user = User.find_by(uid: user_id)
             reply_text = if user.search_info
-                           "現在の登録内容は\nキーワード:#{user.search_info[:keyword]}\nURL:#{user.search_info[:url]}"
+                           "現在の登録内容は\nキーワード:#{user.search_info[:keyword]}\nURL:#{user.search_info[:url]}\n更新する場合は\n登録\nキーワード\n商品URL\nと送信してください。"
                          else
-                           "登録\nキーワード\n商品URL\nを登録してください"
+                           "登録\nキーワード\n商品URL\nと送信してください"
                          end
           when "ランキング"
             user = User.find_by(uid: user_id)
-            reply_text = "#{user.search_info.ranking}位です。"
+            reply_text = if user.search_info.nil?
+                           "検索ワード、商品URLが登録されていません。"
+                         elsif user.search_info.ranks.empty?
+                           "まだ順位が検索されていません。"
+                         else
+                           rank = user.search_info.ranks.order(updated_at: :desc).first
+                           "#{rank[:rank]}位です。(#{rank.updated_at.strftime('%m月%d日')}時点)"
+                         end
           when %r{登録\n(\S+)\n(https://item.rakuten.co.jp/.+[^/])}
             keyword = Regexp.last_match(1)
             url = Regexp.last_match(2)

@@ -24,8 +24,8 @@ namespace :push_line do
 
       #   大きな順位変動があれば通知
       yesterday = today - 1.day
-      rank_yesterday = search_info.ranks.find_by(updated_at: yesterday.all_day).rank
-      next unless rank_yesterday && (rank_yesterday - rank_order).abs >= 3
+      rank_yesterday = search_info.ranks.find_by(updated_at: yesterday.all_day)
+      next unless rank_yesterday && (rank_yesterday.rank - rank_order).abs >= 3
 
       message = {
         type: 'text',

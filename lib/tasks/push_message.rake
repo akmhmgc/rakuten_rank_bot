@@ -12,12 +12,24 @@ namespace :push_line do
       rank_order = search_info.check_ranking
 
       #  ランキングを保存（一日あたり一回分しか保存されない）
-      search_info.ranks.find_or_create_by!(updated_at: Time.zone.today.all_day) do |rank|
+      today = Time.zone.today
+      search_info.ranks.find_or_create_by!(updated_at: today.all_day) do |rank|
         rank.rank = rank_order
       end
       message = {
         type: 'text',
         text: "キーワード:#{search_info.keyword}\n商品URL:#{search_info.url}\n本日の順位:#{rank_order}"
+      }
+      client.push_message(user.uid, message)
+
+      #   大きな順位変動があれば通知
+      yesterday = today - 1.day
+      rank_yesterday = search_info.ranks.find_by(updated_at: yesterday.all_day).rank
+      next unless rank_yesterday && (rank_yesterday - rank_order).abs >= 3
+
+      message = {
+        type: 'text',
+        text: "前日よりランキングが大きく変動しました。(前日:#{rank_yesterday})"
       }
       client.push_message(user.uid, message)
     end
